@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SparkStalker
 
-## Getting Started
+Small web app that turns a **tether.me** username into a **Spark mainnet address** and opens its history on [SparkScan](https://sparkscan.io).
 
-First, run the development server:
+Tagline in the UI: *See every transaction linked to a tether.me username.*
+
+## How it works
+
+1. You enter a username (`alice` or `alice@tether.me`). Input is normalized and validated on the client.
+2. The app requests LNURL-pay metadata from tether.me through a **same-origin relay** (`GET /api/lnurlp?user=…`) so the browser is not blocked by CORS. The relay runs on the **Edge** runtime, forwards the upstream response, and applies a strict username pattern plus a 15s timeout.
+3. From the LNURL metadata, the app reads the **callback** URL, extracts the **identity public key**, encodes it as a Spark address with [`@buildonspark/spark-sdk`](https://www.npmjs.com/package/@buildonspark/spark-sdk) (mainnet), and builds a SparkScan address URL.
+
+No cookies, server-side persistence, or analytics are implemented in this relay path.
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router), [React](https://react.dev) 19, TypeScript
+- [Tailwind CSS](https://tailwindcss.com) v4, UI primitives (Radix / Base UI–style components in `components/ui/`)
+- [next-themes](https://github.com/pacocoursey/next-themes) for light/dark
+- [Vitest](https://vitest.dev) for unit tests under `lib/**/*.test.ts`
+
+`next.config.ts` transpiles `@buildonspark/spark-sdk`.
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- npm (or another client compatible with `package.json`)
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command        | Description              |
+| -------------- | ------------------------ |
+| `npm run dev`  | Next.js dev server       |
+| `npm run build`| Production build         |
+| `npm run start`| Serve production build   |
+| `npm run lint` | ESLint (Next.js config)  |
+| `npm run test` | Vitest (`lib/**/*.test.ts`) |
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+Deploy like any Next.js app (for example [Vercel](https://vercel.com)). The LNURL relay uses `fetch` to `https://tether.me/` from the deployment region; no extra environment variables are required for that flow.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Links
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Author: [pSacramento](https://www.psacramento.com/)
+- [GitHub repository](https://github.com/psacramento-gh/sparkstalker)
