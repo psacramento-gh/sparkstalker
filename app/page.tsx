@@ -28,11 +28,8 @@ export default function Home() {
   }
 
   return (
-    <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-12">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          SparkStalker
-        </h1>
+    <>
+      <header>
         <p className="text-sm text-muted-foreground">
           Resolve a public tether.me username to a SparkScan wallet page.
         </p>
@@ -80,6 +77,6 @@ export default function Home() {
           </a>
         </p>
       ) : null}
-    </main>
+    </>
   );
 }

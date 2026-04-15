@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
+import { AppFrame } from "@/components/app-frame";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -27,13 +27,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background font-sans text-foreground">
+      <body className="min-h-dvh flex flex-col bg-background font-sans text-foreground">
         <ThemeProvider>
           <TooltipProvider>
-            <div className="flex justify-end px-4 pt-4">
-              <ThemeToggle />
-            </div>
-            {children}
+            <AppFrame>{children}</AppFrame>
             <Toaster richColors closeButton position="top-right" />
           </TooltipProvider>
         </ThemeProvider>
