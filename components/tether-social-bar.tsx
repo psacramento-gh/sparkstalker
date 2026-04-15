@@ -59,25 +59,13 @@ function IconFacebook({ className }: { className?: string }) {
   );
 }
 
-function IconReddit({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.233.555-.83.872-1.823.872-2.871 0-1.09-.377-2.09-1-2.887zm-6.666 11.16c-1.369 0-2.5-.887-2.5-1.979s1.131-1.979 2.5-1.979 2.5.887 2.5 1.979-1.131 1.979-2.5 1.979zm6.666-9.073c-1.346 0-2.5-.67-2.5-1.448s1.154-1.448 2.5-1.448 2.5.67 2.5 1.448-1.154 1.448-2.5 1.448z"
-      />
-    </svg>
-  );
-}
-
 const items = [
   { href: "https://x.com/tether/", label: "Tether on X", Icon: IconX },
   { href: "https://www.instagram.com/_tether_/", label: "Tether on Instagram", Icon: IconInstagram },
   { href: "https://t.me/tether", label: "Tether on Telegram", Icon: IconTelegram },
   { href: "https://www.linkedin.com/company/tether", label: "Tether on LinkedIn", Icon: IconLinkedIn },
   { href: "https://www.facebook.com/tether.to", label: "Tether on Facebook", Icon: IconFacebook },
-  { href: "https://www.reddit.com/r/Tether/", label: "Tether on Reddit", Icon: IconReddit },
-  { href: "https://cs.tether.to/BR", label: "Tether customer support (Brazil)", Icon: Headset },
+  { href: "https://cs.tether.to/OI", label: "Tether customer support", Icon: Headset },
 ] as const;
 
 export function TetherSocialBar({ className }: { className?: string }) {
