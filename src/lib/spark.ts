@@ -32,6 +32,7 @@ export async function fetchLnurlPayMetadata(username: string): Promise<LnurlPayM
     response = await fetch(`${LNURL_PREFIX}${encodeURIComponent(username)}`, {
       headers: {
         Accept: "application/json",
+        "User-Agent": "SparkStalker/1.0 (+https://sparkstalker.vercel.app)",
       },
       cache: "no-store",
     });
