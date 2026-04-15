@@ -1,5 +1,6 @@
 import { Eye } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Card,
   CardAction,
@@ -28,6 +29,24 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
         <CardContent className="flex flex-1 flex-col pt-4">
           <main className="flex flex-1 flex-col gap-6">{children}</main>
         </CardContent>
+        <div className="border-border border-t px-4 pt-3 pb-1">
+          <Alert
+            className="gap-2 border-amber-500/35 bg-amber-500/[0.06] px-4 py-3 text-foreground dark:bg-amber-500/10"
+            role="note"
+          >
+            <AlertTitle className="text-foreground">Before You Use Tether Wallet</AlertTitle>
+            <AlertDescription className="text-pretty text-foreground/85">
+              <ul className="list-outside list-disc space-y-2 pl-5 marker:text-amber-600 dark:marker:text-amber-500">
+                <li>Lightning users expect privacy.</li>
+                <li>
+                  Tether Wallet uses Spark to route Lightning payments, which leave public traces.
+                </li>
+                <li>This tool shows that exposure.</li>
+                <li>Tell Tether this limitation should not be hidden from users.</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+        </div>
         <CardFooter
           role="contentinfo"
           className="flex flex-col items-center justify-center gap-2 text-center text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:gap-x-2 sm:gap-y-1"
