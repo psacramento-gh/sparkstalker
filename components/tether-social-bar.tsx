@@ -76,7 +76,7 @@ export function TetherSocialBar({ className }: { className?: string }) {
         className,
       )}
     >
-      <h2 className="mb-3 text-sm font-medium leading-snug text-foreground">
+      <h2 className="mx-auto mb-3 max-w-sm text-balance text-base font-semibold leading-snug tracking-tight text-foreground">
         Reach out to Tether and make your voice be heard
       </h2>
       <nav aria-label="Tether social media and support">

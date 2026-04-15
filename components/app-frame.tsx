@@ -44,7 +44,7 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
                   Tether Wallet uses Spark to route Lightning payments, which leave public traces.
                 </li>
                 <li>This tool shows that exposure.</li>
-                <li>Tell Tether this limitation should not be hidden from users.</li>
+                <li>This limitation should not be hidden from users.</li>
               </ul>
             </AlertDescription>
           </Alert>
