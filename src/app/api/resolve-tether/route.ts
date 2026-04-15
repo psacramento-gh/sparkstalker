@@ -24,7 +24,10 @@ export async function POST(request: Request): Promise<Response> {
       return Response.json({ error: errors.invalid }, { status: 400 });
     }
 
-    const lnurlMetadata = await fetchLnurlPayMetadata(username);
+    const lnurlMetadata = await fetchLnurlPayMetadata(username, {
+      userAgent: request.headers.get("user-agent"),
+      acceptLanguage: request.headers.get("accept-language"),
+    });
     const identifier = extractCallbackIdentifier(lnurlMetadata.callback ?? "");
 
     if (!identifier || !isValidCompressedPubkeyHex(identifier)) {
