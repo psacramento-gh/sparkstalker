@@ -11,14 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-  buildSparkScanUrl,
-  deriveSparkAddressFromIdentifier,
-  extractCallbackIdentifier,
-  fetchLnurlPayMetadata,
-  isValidCompressedPubkeyHex,
-  normalizeTetherInput,
-} from "@/lib/spark";
+import { normalizeTetherInput } from "@/lib/spark";
 
 type LookupState =
   | { status: "idle" }
@@ -58,23 +51,23 @@ export function SparkStalkerTool() {
     setLookupState({ status: "loading" });
 
     try {
-      const lnurlMetadata = await fetchLnurlPayMetadata(username);
-      const identifier = extractCallbackIdentifier(lnurlMetadata.callback ?? "");
+      const response = await fetch("/api/resolve-tether", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
 
-      if (!identifier || !isValidCompressedPubkeyHex(identifier)) {
-        setLookupState({ status: "error", message: errorMessages.notResolvable });
+      const payload = (await response.json()) as { url?: string; error?: string };
+
+      if (!response.ok || !payload.url) {
+        setLookupState({ status: "error", message: payload.error ?? errorMessages.generic });
         return;
       }
 
-      const sparkAddress = deriveSparkAddressFromIdentifier(identifier);
-      const sparkScanUrl = buildSparkScanUrl(sparkAddress);
-      setLookupState({ status: "success", url: sparkScanUrl });
-    } catch (error) {
-      if (error instanceof Error && error.message === "USER_NOT_FOUND") {
-        setLookupState({ status: "error", message: errorMessages.notFound });
-        return;
-      }
-
+      setLookupState({ status: "success", url: payload.url });
+    } catch {
       setLookupState({ status: "error", message: errorMessages.generic });
     }
   }
@@ -166,9 +159,7 @@ export function SparkStalkerTool() {
         </Link>
       </section>
 
-      <footer className="mt-auto pt-10 text-muted-foreground text-sm">
-        Client-side only. No tracking. No storage.
-      </footer>
+      <footer className="mt-auto pt-10 text-muted-foreground text-sm">No tracking. No storage.</footer>
     </main>
   );
 }

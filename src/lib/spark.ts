@@ -26,10 +26,26 @@ export function normalizeTetherInput(input: string): string | null {
 }
 
 export async function fetchLnurlPayMetadata(username: string): Promise<LnurlPayMetadata> {
-  const response = await fetch(`${LNURL_PREFIX}${encodeURIComponent(username)}`);
+  let response: Response;
+
+  try {
+    response = await fetch(`${LNURL_PREFIX}${encodeURIComponent(username)}`, {
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "SparkStalker/1.0 (+https://sparkstalker.vercel.app)",
+      },
+      cache: "no-store",
+    });
+  } catch {
+    throw new Error("UPSTREAM_ERROR");
+  }
+
+  if (response.status === 404) {
+    throw new Error("USER_NOT_FOUND");
+  }
 
   if (!response.ok) {
-    throw new Error("USER_NOT_FOUND");
+    throw new Error("UPSTREAM_ERROR");
   }
 
   const data = (await response.json()) as LnurlPayMetadata;
