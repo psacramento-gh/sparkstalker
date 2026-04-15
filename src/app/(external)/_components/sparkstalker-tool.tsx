@@ -11,7 +11,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { normalizeTetherInput } from "@/lib/spark";
+import {
+  buildSparkScanUrl,
+  deriveSparkAddressFromIdentifier,
+  extractCallbackIdentifier,
+  fetchLnurlPayMetadata,
+  isValidCompressedPubkeyHex,
+  normalizeTetherInput,
+} from "@/lib/spark";
 
 type LookupState =
   | { status: "idle" }
@@ -51,24 +58,26 @@ export function SparkStalkerTool() {
     setLookupState({ status: "loading" });
 
     try {
-      const response = await fetch("/api/resolve-tether", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username }),
-      });
+      const lnurlMetadata = await fetchLnurlPayMetadata(username);
+      const identifier = extractCallbackIdentifier(lnurlMetadata.callback ?? "");
 
-      const payload = (await response.json()) as { url?: string; error?: string };
-
-      if (!response.ok || !payload.url) {
-        setLookupState({ status: "error", message: payload.error ?? errorMessages.generic });
+      if (!identifier || !isValidCompressedPubkeyHex(identifier)) {
+        setLookupState({ status: "error", message: errorMessages.notResolvable });
         return;
       }
 
-      setLookupState({ status: "success", url: payload.url });
-    } catch {
-      setLookupState({ status: "error", message: errorMessages.generic });
+      const sparkAddress = deriveSparkAddressFromIdentifier(identifier);
+      const explorerUrl = buildSparkScanUrl(sparkAddress);
+
+      setLookupState({ status: "success", url: explorerUrl });
+    } catch (error) {
+      if (error instanceof Error && error.message === "USER_NOT_FOUND") {
+        setLookupState({ status: "error", message: errorMessages.notFound });
+      } else if (error instanceof Error && error.message === "UPSTREAM_ERROR") {
+        setLookupState({ status: "error", message: "Unable to reach tether.me right now" });
+      } else {
+        setLookupState({ status: "error", message: errorMessages.generic });
+      }
     }
   }
 
