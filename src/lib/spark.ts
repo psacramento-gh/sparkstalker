@@ -64,13 +64,15 @@ export function extractCallbackIdentifier(callback: string): string | null {
       return null;
     }
 
-    const segments = callbackUrl.pathname.split("/").filter(Boolean);
+    for (const segment of callbackUrl.pathname.split("/").filter(Boolean)) {
+      const normalized = segment.toLowerCase();
 
-    if (segments.length !== 4 || segments[0] !== "api" || segments[1] !== "lnurl" || segments[2] !== "payreq") {
-      return null;
+      if (/^(02|03)[a-f0-9]{64}$/.test(normalized)) {
+        return normalized;
+      }
     }
 
-    return segments[3] ?? null;
+    return null;
   } catch {
     return null;
   }
