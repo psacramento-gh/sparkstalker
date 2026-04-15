@@ -5,6 +5,11 @@ export type LnurlPayMetadata = {
   callback?: string;
 };
 
+type FetchLnurlOptions = {
+  acceptLanguage?: string | null;
+  userAgent?: string | null;
+};
+
 export function normalizeTetherInput(input: string): string | null {
   const normalizedInput = input.trim().toLowerCase();
 
@@ -25,15 +30,25 @@ export function normalizeTetherInput(input: string): string | null {
   return /^[a-z0-9._-]+$/.test(username) ? username : null;
 }
 
-export async function fetchLnurlPayMetadata(username: string): Promise<LnurlPayMetadata> {
+export async function fetchLnurlPayMetadata(
+  username: string,
+  options: FetchLnurlOptions = {},
+): Promise<LnurlPayMetadata> {
   let response: Response;
+  const userAgent = options.userAgent?.trim();
+  const acceptLanguage = options.acceptLanguage?.trim();
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "User-Agent": userAgent || "SparkStalker/1.0 (+https://sparkstalker.vercel.app)",
+  };
+
+  if (acceptLanguage) {
+    headers["Accept-Language"] = acceptLanguage;
+  }
 
   try {
     response = await fetch(`${LNURL_PREFIX}${encodeURIComponent(username)}`, {
-      headers: {
-        Accept: "application/json",
-        "User-Agent": "SparkStalker/1.0 (+https://sparkstalker.vercel.app)",
-      },
+      headers,
       cache: "no-store",
     });
   } catch {

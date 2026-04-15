@@ -1,4 +1,4 @@
-# Tether.me resolution outage root-cause analysis
+# Tether.me resolution outage deep-dive
 
 ## Symptom
 Users receive: `Unable to reach tether.me right now`.
@@ -9,11 +9,13 @@ The server route returns that exact message when `fetchLnurlPayMetadata` throws 
 ## Git history findings
 - Commit `25d46a9` added server-side resolution and set a custom `User-Agent` in the upstream fetch.
 - Commit `437060f` removed that `User-Agent` header while keeping server-side resolution.
-- After that removal, upstream requests can fail with non-200 responses, which are mapped to `UPSTREAM_ERROR` and surfaced to users as `Unable to reach tether.me right now`.
+- Commit `8608cfc` restored the static custom `User-Agent`.
+- Despite those changes, there was still no confirmed end-to-end success from a real deployed environment.
 
 ## Root cause
-The regression was the removal of the explicit `User-Agent` header in the server-side call to `https://tether.me/.well-known/lnurlp/<username>`. The previous working commit used a stable app-identifying user agent string. Removing it changed request classification upstream and caused upstream failures in production environments.
+The deeper issue is upstream request classification variability at `tether.me` (likely anti-bot / allowlist behavior), combined with insufficient live end-to-end validation. A static header change alone is not reliably sufficient.
 
 ## Fix applied
-Restore the explicit `User-Agent` header in `fetchLnurlPayMetadata`.
-
+- Forward the *real browser* `User-Agent` and `Accept-Language` from the incoming request to the upstream tether.me request.
+- Keep a safe fallback `User-Agent` when no browser header is present.
+- This keeps server-side CORS-safe architecture while making upstream requests look like the real caller instead of a fixed bot-like signature.
