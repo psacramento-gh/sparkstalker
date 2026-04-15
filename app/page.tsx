@@ -19,10 +19,12 @@ export default function Home() {
     null,
   );
 
+  const normalizedValue = normalizeInput(value);
   const submitDisabled =
     loading ||
+    !normalizedValue ||
     (lastQueriedNormalized !== null &&
-      normalizeInput(value) === lastQueriedNormalized);
+      normalizedValue === lastQueriedNormalized);
 
   async function onResolve() {
     const queriedValue = value;
