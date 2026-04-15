@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -26,14 +25,17 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("h-full", "antialiased", geistMono.variable, "font-sans", geist.variable)}
+      className={`${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background font-sans text-foreground">
         <ThemeProvider>
-          <div className="flex justify-end px-4 pt-4">
-            <ThemeToggle />
-          </div>
-          {children}
+          <TooltipProvider>
+            <div className="flex justify-end px-4 pt-4">
+              <ThemeToggle />
+            </div>
+            {children}
+            <Toaster richColors closeButton position="top-right" />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

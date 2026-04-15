@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { resolveTetherUsername } from "@/lib/resolve";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const [value, setValue] = useState("");
@@ -36,8 +38,8 @@ export default function Home() {
         </p>
       </header>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <input
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Input
           type="text"
           name="username"
           autoComplete="username"
@@ -47,16 +49,17 @@ export default function Home() {
           onKeyDown={(e) => {
             if (e.key === "Enter") void onResolve();
           }}
-          className="min-h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none ring-ring placeholder:text-muted-foreground focus:border-ring focus:ring-2"
+          className="flex-1"
         />
-        <button
+        <Button
           type="button"
+          size="lg"
           disabled={loading}
           onClick={() => void onResolve()}
-          className="min-h-10 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="shrink-0 sm:w-auto"
         >
           {loading ? "…" : "Resolve"}
-        </button>
+        </Button>
       </div>
 
       {error ? (
