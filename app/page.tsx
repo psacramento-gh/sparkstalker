@@ -51,7 +51,16 @@ export default function Home() {
     <>
       <header>
         <p className="text-sm text-muted-foreground">
-          See every transaction linked to a tether.me username.
+          See every transaction linked to a{" "}
+          <a
+            href="https://wallet.tether.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            tether.me
+          </a>{" "}
+          username.
         </p>
       </header>
 
