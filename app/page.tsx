@@ -10,7 +10,10 @@ export default function Home() {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [link, setLink] = useState<string | null>(null);
+  const [resolveResult, setResolveResult] = useState<{
+    sparkScanUrl: string;
+    sparkAddress: string;
+  } | null>(null);
   /** `normalizeInput` snapshot for the last completed query; button stays disabled until `value` normalizes to something else. */
   const [lastQueriedNormalized, setLastQueriedNormalized] = useState<string | null>(
     null,
@@ -24,12 +27,15 @@ export default function Home() {
   async function onResolve() {
     const queriedValue = value;
     setError(null);
-    setLink(null);
+    setResolveResult(null);
     setLoading(true);
     try {
       const result = await resolveTetherUsername(queriedValue);
       if (result.ok) {
-        setLink(result.sparkScanUrl);
+        setResolveResult({
+          sparkScanUrl: result.sparkScanUrl,
+          sparkAddress: result.sparkAddress,
+        });
       } else {
         setError(result.message);
       }
@@ -67,7 +73,7 @@ export default function Home() {
           onClick={() => void onResolve()}
           className="shrink-0 sm:w-auto"
         >
-          {loading ? "…" : "Check transactions"}
+          Check transactions
         </Button>
       </div>
 
@@ -77,17 +83,24 @@ export default function Home() {
         </p>
       ) : null}
 
-      {link ? (
-        <p className="text-sm">
+      {resolveResult ? (
+        <div className="flex flex-col gap-1.5">
+          <p
+            id="spark-address-label"
+            className="text-xs font-medium text-muted-foreground"
+          >
+            Spark address
+          </p>
           <a
-            href={link}
+            href={resolveResult.sparkScanUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
+            aria-labelledby="spark-address-label"
+            className="font-mono text-base font-semibold leading-snug break-all text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
           >
-            Open in SparkScan
+            {resolveResult.sparkAddress}
           </a>
-        </p>
+        </div>
       ) : null}
     </>
   );
