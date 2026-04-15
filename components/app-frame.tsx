@@ -1,4 +1,5 @@
 import { Eye } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { TetherSocialBar } from "@/components/tether-social-bar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -51,9 +52,9 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
         <TetherSocialBar />
         <CardFooter
           role="contentinfo"
-          className="flex flex-col items-center justify-center gap-2 text-center text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:gap-x-2 sm:gap-y-1"
+          className="flex max-w-full flex-row flex-nowrap items-center justify-center gap-x-1 overflow-x-auto overscroll-x-contain text-xs text-muted-foreground sm:gap-x-2"
         >
-          <p className="leading-relaxed">
+          <p className="m-0 shrink-0 whitespace-nowrap leading-relaxed">
             Built by{" "}
             <a
               href="https://www.psacramento.com/"
@@ -64,25 +65,25 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
               pSacramento
             </a>
           </p>
-          <span className="hidden text-muted-foreground/60 sm:inline" aria-hidden>
+          <span className="shrink-0 text-muted-foreground/60" aria-hidden>
             ·
           </span>
           <a
             href="https://x.com/psacramento_x"
             target="_blank"
             rel="noopener noreferrer"
-            className={footerLinkClass}
+            className={cn(footerLinkClass, "shrink-0 whitespace-nowrap")}
           >
             X profile
           </a>
-          <span className="hidden text-muted-foreground/60 sm:inline" aria-hidden>
+          <span className="shrink-0 text-muted-foreground/60" aria-hidden>
             ·
           </span>
           <a
             href="https://github.com/psacramento-gh/sparkstalker"
             target="_blank"
             rel="noopener noreferrer"
-            className={footerLinkClass}
+            className={cn(footerLinkClass, "shrink-0 whitespace-nowrap")}
           >
             GitHub
           </a>
