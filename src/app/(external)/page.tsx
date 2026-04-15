@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
+import { SparkStalkerTool } from "./_components/sparkstalker-tool";
 
-export default function Home() {
-  redirect("/dashboard/default");
-  return <>Coming Soon</>;
+export default function HomePage() {
+  return <SparkStalkerTool />;
 }
