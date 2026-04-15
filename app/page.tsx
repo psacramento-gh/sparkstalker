@@ -28,10 +28,10 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-full max-w-lg flex-col gap-6 px-4 py-12">
       <header className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           SparkStalker
         </h1>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           Resolve a public tether.me username to a SparkScan wallet page.
         </p>
       </header>
@@ -47,20 +47,20 @@ export default function Home() {
           onKeyDown={(e) => {
             if (e.key === "Enter") void onResolve();
           }}
-          className="min-h-10 flex-1 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-zinc-400 placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+          className="min-h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm outline-none ring-ring placeholder:text-muted-foreground focus:border-ring focus:ring-2"
         />
         <button
           type="button"
           disabled={loading}
           onClick={() => void onResolve()}
-          className="min-h-10 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="min-h-10 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {loading ? "…" : "Resolve"}
         </button>
       </div>
 
       {error ? (
-        <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+        <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : null}
@@ -71,7 +71,7 @@ export default function Home() {
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:text-blue-400"
+            className="font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
           >
             Open in SparkScan
           </a>
