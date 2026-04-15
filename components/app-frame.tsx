@@ -1,4 +1,5 @@
 import { Eye } from "lucide-react";
+import { TetherSocialBar } from "@/components/tether-social-bar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -47,6 +48,7 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
             </AlertDescription>
           </Alert>
         </div>
+        <TetherSocialBar />
         <CardFooter
           role="contentinfo"
           className="flex flex-col items-center justify-center gap-2 text-center text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:gap-x-2 sm:gap-y-1"
