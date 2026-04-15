@@ -11,7 +11,7 @@ import {
 export function AppFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh justify-center bg-background p-4">
-      <Card className="flex w-full max-w-lg min-h-[calc(100dvh-2rem)] flex-col shadow-sm">
+      <Card className="flex w-full max-w-lg min-h-[calc(100dvh-2rem)] flex-col gap-0 shadow-sm">
         <CardHeader className="border-border border-b">
           <CardTitle className="text-lg tracking-tight">
             <span className="inline-flex items-center gap-2">
@@ -23,7 +23,7 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
             <ThemeToggle />
           </CardAction>
         </CardHeader>
-        <CardContent className="flex flex-1 flex-col pt-6">
+        <CardContent className="flex flex-1 flex-col pt-4">
           <main className="flex flex-1 flex-col gap-6">{children}</main>
         </CardContent>
       </Card>
