@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SparkStalker",
-  description: "Resolve a public tether.me username to a SparkScan wallet page.",
+  description: "See every transaction linked to a tether.me username.",
 };
 
 export default function RootLayout({
